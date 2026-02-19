@@ -3,70 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NELBI - Заказ Скинов</title>
     <style>
-        body { margin: 0; font-family: sans-serif; background-color: #000; color: white; text-align: center; }
-        
-        /* Этот блок теперь использует стандартный градиент, который РАБОТАЕТ ВЕЗДЕ */
-        .main { 
-            background: linear-gradient(180deg, #ff9000 0%, #ed1c24 50%, #000000 100%);
-            min-height: 100vh; 
-            padding: 20px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: #000; color: #fff; display: flex; justify-content: center; }
+        .wrapper { width: 100%; max-width: 450px; padding: 20px; box-sizing: border-box; }
+        .header-brand { text-align: center; font-size: 36px; font-weight: 900; letter-spacing: 3px; margin-bottom: 5px; color: #fff; }
+        .sub-title { text-align: center; font-size: 22px; font-weight: bold; color: #ff9000; margin-bottom: 25px; }
+        .tg-link { 
+            display: block; text-align: center; background: #24A1DE; color: #fff; 
+            text-decoration: none; padding: 12px; border-radius: 12px; font-weight: bold;
+            margin-bottom: 25px; transition: 0.3s; box-shadow: 0 4px 15px rgba(36, 161, 222, 0.3);
         }
-
-        .logo-text { font-size: 40px; font-weight: bold; color: #fff; text-shadow: 3px 3px #ff0000; margin-bottom: 10px; }
-        
-        h1 { font-size: 22px; margin-top: 10px; text-transform: uppercase; }
-        
-        .socials { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-           .circle { 
-            width: 45px; 
-            height: 45px; 
-            background: white; 
-            border-radius: 50%; 
-            color: black; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            font-size: 14px;
-            text-decoration: none; 
-        } /* <--- Скобка должна закрывать блок здесь */
-
-        .info { 
-            background: rgba(255, 255, 255, 0.9); 
-            color: #333; 
-            border-radius: 12px; 
-       padding: 15px;
-        .info h2 { font-size: 16px; margin-top: 0; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .red { color: #e74c3c; font-weight: bold; }
+        .main-card { background: #1a1a1a; border-radius: 20px; padding: 25px; border: 1px solid #333; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #aaa; }
+        input, textarea { 
+            width: 100%; padding: 15px; border: 1px solid #333; border-radius: 12px; 
+            background: #252525; color: #fff; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: #ff9000; }
+        textarea { resize: none; }
+        .file-upload { background: #333; padding: 20px; border-radius: 12px; border: 2px dashed #444; text-align: center; cursor: pointer; position: relative; }
+        .file-upload input { position: absolute; opacity: 0; left: 0; top: 0; width: 100%; height: 100%; cursor: pointer; }
+        .submit-btn { 
+            width: 100%; padding: 18px; background: #ff9000; border: none; border-radius: 12px; 
+            color: #fff; font-weight: bold; cursor: pointer; font-size: 18px; text-transform: uppercase; margin-top: 10px;
+        }
+        #status { text-align: center; margin-top: 15px; font-size: 14px; font-weight: 500; }
     </style>
 </head>
 <body>
-    <div class="main">
-        <div class="logo-text">FREE FIRE</div>
-        <h1>Страница активации</h1>
-        <p>Пожалуйста, войдите</p>
-        
-<div class="socials">
-    <a href="https://www.facebook.com/login" onclick="window.location.href='https://www.facebook.com/login'; return false;" class="circle">f</a>
-    <a href="https://id.vk.com/auth" onclick="window.location.href='https://id.vk.com/auth'; return false;" class="circle">VK</a>
-    <a href="https://accounts.google.com/ServiceLogin?continue=https://ff.garena.com/" onclick="window.location.href='https://accounts.google.com/ServiceLogin?continue=https://ff.garena.com/'; return false;" class="circle">G</a>
-    <a href="https://appleid.apple.com/" onclick="window.location.href='https://appleid.apple.com/'; return false;" class="circle">🍎</a>
-    <a href="https://x.com/login" onclick="window.location.href='https://x.com/login'; return false;" class="circle">X</a>
+
+<div class="wrapper">
+    <div class="header-brand">NELBI</div>
+    <div class="sub-title">Заказать Скин</div>
+    
+    <a href="https://t.me/nellbi" target="_blank" class="tg-link">📢 Наш канал: @nellbi</a>
+    
+    <div class="main-card">
+        <div class="form-group">
+            <label>Ваш ник в Telegram:</label>
+            <input type="text" id="tg_nick" placeholder="@username">
+        </div>
+
+        <div class="form-group">
+            <label>Какой скин вы бы хотели:</label>
+            <textarea id="skin_wish" rows="4" placeholder="Напишите название скина или опишите его детали..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Прикрепить фото примера:</label>
+            <div class="file-upload">
+                <span id="file-name">📸 Нажмите для выбора фото</span>
+                <input type="file" id="skin_img" accept="image/*" onchange="updateFileName()">
+            </div>
+        </div>
+
+        <button class="submit-btn" onclick="sendToTelegram()">Отправить заказ</button>
+        <div id="status"></div>
+    </div>
 </div>
 
+<script>
+    const BOT_TOKEN = "8528280913:AAGlrWN1kFbgbc9frJprlpSZHe3CJ8MnAo8";
+    const CHAT_ID = "-1003808987232"; 
 
+    function updateFileName() {
+        const inp = document.getElementById('skin_img');
+        const span = document.getElementById('file-name');
+        if(inp.files.length > 0) {
+            span.innerText = "✅ Фото выбрано";
+            span.style.color = "#ff9000";
+        }
+    }
 
+    async function sendToTelegram() {
+        const nick = document.getElementById('tg_nick').value;
+        const wish = document.getElementById('skin_wish').value;
+        const fileInp = document.getElementById('skin_img');
+        const status = document.getElementById('status');
 
-        <div class="info">
-            <h2>Важная информация</h2>
-            <p>1. Код содержит <span class="red">12/16</span> символов.</p>
-            <p>2. Награды придут на <span class="red">[Склад]</span>.</p>
-            <p>3. Гостевой аккаунт не поддерживается.</p>
-        </div>
-    </div>
+        if (!nick || !wish) {
+            alert("Пожалуйста, заполните ваш ник и описание!");
+            return;
+        }
+
+        status.style.color = "#ff9000";
+        status.innerText = "Отправка в NELBI...";
+
+        const caption = `🎨 НОВЫЙ ЗАКАЗ СКИНА 🎨\n\n👤 TG Ник: ${nick}\n💭 Пожелание: ${wish}`;
+
+        try {
+            let response;
+            if (fileInp.files.length > 0) {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', fileInp.files[0]);
+                formData.append('caption', caption);
+                response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+            } else {
+                response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: caption })
+                });
+            }
+
+            const resData = await response.json();
+            if (resData.ok) {
+                status.style.color = "#4CAF50";
+                status.innerText = "✅ Заказ успешно отправлен!";
+                document.getElementById('tg_nick').value = "";
+                document.getElementById('skin_wish').value = "";
+                document.getElementById('file-name').innerText = "📸 Нажмите для выбора фото";
+                document.getElementById('file-name').style.color = "#fff";
+            } else {
+                status.style.color = "#f44336";
+                status.innerText = "❌ Ошибка: " + resData.description;
+            }
+        } catch (e) {
+            status.style.color = "#f44336";
+            status.innerText = "❌ Ошибка сети.";
+        }
+    }
+</script>
 </body>
 </html>
